@@ -1,0 +1,57 @@
+<project name="coverage.wow" default="package" basedir=".">
+
+	<property name="dest" value="${basedir}/dest"/>
+	<property name="src" value="${basedir}/src"/>
+	<property name="test" value="${basedir}/test"/>
+	<property name="libs" value="${basedir}/libs"/>
+		
+	<target name="clean">
+		<delete dir="${dest}"/>
+		<mkdir dir="${dest}" />
+	</target>
+	
+	<target name="compile" depends="clean">
+		<mkdir dir="${dest}/classes"/>
+		<javac destdir="${dest}/classes" source="1.5" target="1.5" encoding="utf-8">
+            <src path="${src}"/>
+        </javac>
+	</target>
+	
+	<target name="-compile-ut">
+		<mkdir dir="${dest}/test"/>
+		<javac destdir="${dest}/test" source="1.5" target="1.5" encoding="utf-8">
+            <src path="${test}"/>
+			<classpath>
+                <path location="${dest}/classes"/>
+                <path location="${libs}/junit-4.10.jar"/>
+            </classpath>
+		</javac>
+	</target>
+	
+	<target name="ut" depends="compile, -compile-ut">
+		<mkdir dir="${dest}/test"/>
+		<junit printsummary="yes" haltonfailure="yes" fork="true" dir="${dest}/test">
+			<classpath>
+                <path location="${dest}/classes"/>
+                <path location="${dest}/test"/>
+                <path location="${libs}/junit-4.10.jar"/>
+			</classpath>
+
+			<batchtest todir="${dest}/test-result">
+				<fileset dir="${dest}/test">
+					 <include name="**/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="package" depends="ut">
+		<jar destfile="${dest}/coveragewow.jar">
+			<fileset dir="${dest}/classes"/>
+			<manifest>
+				<attribute name="Main-Class" value="com.thoughtworks.wowcoverage.CoverageWow"/>
+			</manifest>
+		</jar>
+	</target>
+
+</project>
