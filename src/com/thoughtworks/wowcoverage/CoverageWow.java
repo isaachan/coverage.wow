@@ -10,14 +10,12 @@ public class CoverageWow {
 			System.exit(-1);
 		}
 		
-		CoverageConfigration configration = new CoverageConfigration(args[0]);
+		CoverageConfiguration configuration = new CoverageConfiguration(args[0]);
 		CoverageDataReader cvsReader = new CoverageDataReader(args[1]);
-		CoverageChecker checker = new CoverageChecker(cvsReader, configration);
+		CoverageChecker checker = new CoverageChecker(cvsReader, configuration);
 		checker.update();
 		checker.report();
 		
-		if (checker.coverageDesreased()) {
-			System.exit(-1);
-		}
+		if (checker.coverageDesreased()) System.exit(-1);
 	}
 }

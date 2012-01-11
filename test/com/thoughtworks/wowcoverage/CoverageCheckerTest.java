@@ -48,7 +48,7 @@ public class CoverageCheckerTest {
 	}
 }
 
-class FakeCoverageConfigration extends CoverageConfigration {
+class FakeCoverageConfigration extends CoverageConfiguration {
 
 	String message = "";
 	private double instrucntionCoverage;
